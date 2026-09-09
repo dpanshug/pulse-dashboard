@@ -276,8 +276,8 @@ jobs:
 
       - name: Pull core frontend images
         run: |
-          docker pull quay.io/osaipo-data/org-pulse-core-frontend-builder:${CORE_TAG}
-          docker pull quay.io/osaipo-data/org-pulse-core-frontend-runtime:${CORE_TAG}
+          docker pull quay.io/osaipo-data/osaipo-pulse-core-frontend-builder:${CORE_TAG}
+          docker pull quay.io/osaipo-data/osaipo-pulse-core-frontend-runtime:${CORE_TAG}
 
       - name: Build AI Eng frontend image
         run: |
