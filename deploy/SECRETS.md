@@ -26,7 +26,7 @@ tokens that auto-expire after 1 hour. Higher rate limits (12,500 GraphQL +
 | Env Var | Required | Description |
 |---------|----------|-------------|
 | `GITHUB_APP_ID` | No | GitHub App ID (via ConfigMap) |
-| `GITHUB_APP_PRIVATE_KEY` | No | RSA private key PEM content (via `team-tracker-secrets`) |
+| `GITHUB_APP_PRIVATE_KEY` | No | RSA private key PEM content (via `osaipo-pulse-secrets`) |
 | `GITHUB_APP_INSTALLATION_ID` | No | Installation ID for the target org (via ConfigMap) |
 | `GITHUB_TOKEN` | No | Classic PAT with `read:user` scope (local dev fallback when App vars are not set) |
 
@@ -87,22 +87,22 @@ Dynamic secrets: `GITLAB_*_TOKEN` — per-instance GitLab tokens configured via 
 
 ## OpenShift Deployment
 
-All secrets are stored in a single `team-tracker-secrets` Secret object. See `deploy/OPENSHIFT.md` for creation commands.
+All secrets are stored in a single `osaipo-pulse-secrets` Secret object. See `deploy/OPENSHIFT.md` for creation commands.
 
 ```bash
 # Create the secret
-oc create secret generic team-tracker-secrets \
-  -n team-tracker \
+oc create secret generic osaipo-pulse-secrets \
+  -n osaipo-pulse \
   --from-literal=JIRA_EMAIL=you@redhat.com \
   --from-literal=JIRA_TOKEN=your-jira-api-token
 
 # Patch to add optional secrets
-oc patch secret team-tracker-secrets -n team-tracker \
+oc patch secret osaipo-pulse-secrets -n osaipo-pulse \
   --type merge \
   -p '{"stringData":{"GITHUB_TOKEN":"your-token"}}'
 
 # GitHub App auth (preferred for production) — add PEM key to the same secret
-oc patch secret team-tracker-secrets -n team-tracker \
+oc patch secret osaipo-pulse-secrets -n osaipo-pulse \
   --type merge \
   -p "{\"stringData\":{\"GITHUB_APP_PRIVATE_KEY\":\"$(cat /path/to/key.pem)\"}}"
 ```

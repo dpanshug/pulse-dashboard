@@ -14,7 +14,7 @@ on:
       - 'server/index.js'
       - 'modules/*/server/**'
       - 'platform/*/server/**'
-      - 'deploy/ai-eng.backend.Dockerfile'
+      - 'deploy/osaipo-eng.backend.Dockerfile'
       # Frontend
       - 'public/**'
       - 'modules/*/client/**'
@@ -23,7 +23,7 @@ on:
       - 'vite.config.mjs'
       - 'tailwind.config.mjs'
       - 'postcss.config.mjs'
-      - 'deploy/ai-eng.frontend.Dockerfile'
+      - 'deploy/osaipo-eng.frontend.Dockerfile'
       # Shared
       - 'modules/*/module.json'
       - 'package*.json'
@@ -36,8 +36,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BACKEND_IMAGE: quay.io/org-pulse/team-tracker-backend
-  FRONTEND_IMAGE: quay.io/org-pulse/team-tracker-frontend
+  BACKEND_IMAGE: quay.io/osaipo-data/osaipo-pulse-backend
+  FRONTEND_IMAGE: quay.io/osaipo-data/osaipo-pulse-frontend
 
 jobs:
   detect-changes:
@@ -62,12 +62,12 @@ jobs:
           FRONTEND=false
 
           # Check backend paths (platform extensions can have server routes)
-          if echo "$CHANGED" | grep -qE '^(server/index\.js|modules/[^/]+/server/|modules/[^/]+/module\.json|platform/[^/]+/server/|platform/[^/]+/manifest\.json|deploy/ai-eng\.backend\.Dockerfile|package)'; then
+          if echo "$CHANGED" | grep -qE '^(server/index\.js|modules/[^/]+/server/|modules/[^/]+/module\.json|platform/[^/]+/server/|platform/[^/]+/manifest\.json|deploy/osaipo-eng\.backend\.Dockerfile|package)'; then
             BACKEND=true
           fi
 
           # Check frontend paths
-          if echo "$CHANGED" | grep -qE '^(public/|modules/[^/]+/client/|modules/[^/]+/module\.json|platform/|index\.html|vite\.config|tailwind\.config|postcss\.config|deploy/ai-eng\.frontend.*\.Dockerfile|package)'; then
+          if echo "$CHANGED" | grep -qE '^(public/|modules/[^/]+/client/|modules/[^/]+/module\.json|platform/|index\.html|vite\.config|tailwind\.config|postcss\.config|deploy/osaipo-eng\.frontend.*\.Dockerfile|package)'; then
             FRONTEND=true
           fi
 
@@ -215,12 +215,12 @@ jobs:
           ref: ${{ needs.version-bump.outputs.build_sha || github.sha }}
 
       - name: Pull core backend image
-        run: docker pull quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
+        run: docker pull quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
 
       - name: Build AI Eng backend image
         run: |
           docker build \
-            -f deploy/ai-eng.backend.Dockerfile \
+            -f deploy/osaipo-eng.backend.Dockerfile \
             --build-arg CORE_TAG=${CORE_TAG} \
             -t ${{ env.BACKEND_IMAGE }}:${BUILD_SHA} \
             .
@@ -276,22 +276,22 @@ jobs:
 
       - name: Pull core frontend images
         run: |
-          docker pull quay.io/org-pulse/org-pulse-core-frontend-builder:${CORE_TAG}
-          docker pull quay.io/org-pulse/org-pulse-core-frontend-runtime:${CORE_TAG}
+          docker pull quay.io/osaipo-data/org-pulse-core-frontend-builder:${CORE_TAG}
+          docker pull quay.io/osaipo-data/org-pulse-core-frontend-runtime:${CORE_TAG}
 
       - name: Build AI Eng frontend image
         run: |
           docker build \
-            -f deploy/ai-eng.frontend.Dockerfile \
+            -f deploy/osaipo-eng.frontend.Dockerfile \
             --build-arg CORE_TAG=${CORE_TAG} \
             -t ${{ env.FRONTEND_IMAGE }}:${BUILD_SHA} \
             .
 
       - name: Build AI Eng backend image (needed for smoke tests)
         run: |
-          docker pull quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
+          docker pull quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
           docker build \
-            -f deploy/ai-eng.backend.Dockerfile \
+            -f deploy/osaipo-eng.backend.Dockerfile \
             --build-arg CORE_TAG=${CORE_TAG} \
             -t ${{ env.BACKEND_IMAGE }}:${BUILD_SHA} \
             .
@@ -346,18 +346,18 @@ jobs:
 
       - name: Update backend image tag
         if: needs.build-backend.result == 'success'
-        working-directory: deploy/openshift/overlays/ai-eng-preprod
+        working-directory: deploy/openshift/overlays/osaipo-eng-preprod
         run: |
           kustomize edit set image ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
 
       - name: Update frontend image tag
         if: needs.build-frontend.result == 'success'
-        working-directory: deploy/openshift/overlays/ai-eng-preprod
+        working-directory: deploy/openshift/overlays/osaipo-eng-preprod
         run: |
           kustomize edit set image ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
 
       - name: Validate kustomize build
-        run: kustomize build deploy/openshift/overlays/ai-eng-preprod > /dev/null
+        run: kustomize build deploy/openshift/overlays/osaipo-eng-preprod > /dev/null
 
       - name: Push deploy commit
         run: |
@@ -372,7 +372,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add deploy/openshift/overlays/ai-eng-preprod/kustomization.yaml
+          git add deploy/openshift/overlays/osaipo-eng-preprod/kustomization.yaml
           git diff --cached --quiet && { echo "No changes to commit"; exit 0; }
           git commit -m "deploy: update ${PARTS} image to ${{ github.sha }}"
           git push origin preprod
@@ -409,18 +409,18 @@ jobs:
 
       - name: Update backend image tag
         if: needs.build-backend.result == 'success'
-        working-directory: deploy/openshift/overlays/ai-eng-prod
+        working-directory: deploy/openshift/overlays/osaipo-eng-prod
         run: |
           kustomize edit set image ${{ env.BACKEND_IMAGE }}:${BUILD_SHA}
 
       - name: Update frontend image tag
         if: needs.build-frontend.result == 'success'
-        working-directory: deploy/openshift/overlays/ai-eng-prod
+        working-directory: deploy/openshift/overlays/osaipo-eng-prod
         run: |
           kustomize edit set image ${{ env.FRONTEND_IMAGE }}:${BUILD_SHA}
 
       - name: Validate kustomize build
-        run: kustomize build deploy/openshift/overlays/ai-eng-prod > /dev/null
+        run: kustomize build deploy/openshift/overlays/osaipo-eng-prod > /dev/null
 
       - name: Push deploy commit
         run: |
@@ -436,7 +436,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add deploy/openshift/overlays/ai-eng-prod/kustomization.yaml
+          git add deploy/openshift/overlays/osaipo-eng-prod/kustomization.yaml
           git diff --cached --quiet && { echo "No changes to commit"; exit 0; }
           git commit -m "deploy: update ${PARTS} image to ${VERSION} (${BUILD_SHA}) [skip ci]"
           git push origin main

@@ -12,7 +12,7 @@ This guide covers deploying the app to an OpenShift cluster. For local testing w
 ## 1. Create the namespace
 
 ```bash
-oc new-project team-tracker
+oc new-project osaipo-pulse
 ```
 
 ## 2. Create secrets
@@ -21,48 +21,48 @@ Three secrets are needed (created manually, not stored in git):
 
 ```bash
 # Required: Jira credentials
-oc create secret generic team-tracker-secrets \
-  -n team-tracker \
+oc create secret generic osaipo-pulse-secrets \
+  -n osaipo-pulse \
   --from-literal=JIRA_EMAIL=you@redhat.com \
   --from-literal=JIRA_TOKEN=your-jira-api-token
 
 # Optional: GitHub token (for contribution stats)
 # Use a classic PAT with read:user scope — fine-grained tokens don't work with GraphQL
 # Important: use tr -d '\n' to strip trailing newlines from token files
-oc patch secret team-tracker-secrets \
-  -n team-tracker \
+oc patch secret osaipo-pulse-secrets \
+  -n osaipo-pulse \
   --type merge \
   -p "{\"stringData\":{\"GITHUB_TOKEN\":\"$(tr -d '\n' < ~/.your-github-token)\"}}"
 
 # Optional: GitLab token (for contribution stats)
 # Use a PAT with read_api scope
-oc patch secret team-tracker-secrets \
-  -n team-tracker \
+oc patch secret osaipo-pulse-secrets \
+  -n osaipo-pulse \
   --type merge \
   -p "{\"stringData\":{\"GITLAB_TOKEN\":\"$(tr -d '\n' < ~/.your-gitlab-token)\"}}"
 
 # Optional: Releases Execution GitLab token (for CI artifact fetching)
 # Only needed if the execution pipeline project requires a different token than GITLAB_TOKEN
 # Use a PAT with read_api scope
-oc patch secret team-tracker-secrets \
-  -n team-tracker \
+oc patch secret osaipo-pulse-secrets \
+  -n osaipo-pulse \
   --type merge \
   -p "{\"stringData\":{\"FEATURE_TRAFFIC_GITLAB_TOKEN\":\"$(tr -d '\n' < ~/.your-ft-gitlab-token)\"}}"
 
 # Required: OAuth proxy cookie secret
 oc create secret generic frontend-proxy-cookie \
-  -n team-tracker \
+  -n osaipo-pulse \
   --from-literal=session_secret="$(openssl rand -base64 32)"
 
 # Optional: Google service account key (for roster sync from Google Sheets)
 oc create secret generic google-sa-key \
-  -n team-tracker \
+  -n osaipo-pulse \
   --from-file=google-sa-key.json=./secrets/google-sa-key.json
 
 # Optional: SmartSheet API token (for releases module -- release discovery)
 # Generate a token at: My Account > Personal Settings > API Access > Generate New Access Token
-oc patch secret team-tracker-secrets \
-  -n team-tracker \
+oc patch secret osaipo-pulse-secrets \
+  -n osaipo-pulse \
   --type merge \
   -p "{\"stringData\":{\"SMARTSHEET_API_TOKEN\":\"$(tr -d '\n' < ~/.your-smartsheet-token)\"}}"
 ```
@@ -93,7 +93,7 @@ EOF
 TMPDIR=$(mktemp -d)
 cp -r dist "$TMPDIR/dist"
 cp -r deploy "$TMPDIR/deploy"
-podman build --platform linux/amd64 -t quay.io/org-pulse/team-tracker-frontend:latest \
+podman build --platform linux/amd64 -t quay.io/osaipo-data/osaipo-pulse-frontend:latest \
   -f /tmp/frontend-amd64.Dockerfile "$TMPDIR"
 rm -rf "$TMPDIR"
 ```
@@ -125,7 +125,7 @@ mkdir -p "$TMPDIR/shared"
 cp -r shared/server "$TMPDIR/shared/server"
 cp -r modules "$TMPDIR/modules"
 cd "$TMPDIR" && npm ci --omit=dev && cd -
-podman build --platform linux/amd64 -t quay.io/org-pulse/team-tracker-backend:latest \
+podman build --platform linux/amd64 -t quay.io/osaipo-data/osaipo-pulse-backend:latest \
   -f /tmp/backend-amd64.Dockerfile "$TMPDIR"
 rm -rf "$TMPDIR"
 ```
@@ -137,15 +137,15 @@ rm -rf "$TMPDIR"
 Build directly with the standard Dockerfiles:
 
 ```bash
-podman build -t quay.io/org-pulse/team-tracker-backend:latest -f deploy/ai-eng.backend.Dockerfile .
-podman build -t quay.io/org-pulse/team-tracker-frontend:latest -f deploy/ai-eng.frontend.Dockerfile .
+podman build -t quay.io/osaipo-data/osaipo-pulse-backend:latest -f deploy/osaipo-eng.backend.Dockerfile .
+podman build -t quay.io/osaipo-data/osaipo-pulse-frontend:latest -f deploy/osaipo-eng.frontend.Dockerfile .
 ```
 
 ## 4. Push images
 
 ```bash
-podman push quay.io/org-pulse/team-tracker-backend:latest
-podman push quay.io/org-pulse/team-tracker-frontend:latest
+podman push quay.io/osaipo-data/osaipo-pulse-backend:latest
+podman push quay.io/osaipo-data/osaipo-pulse-frontend:latest
 ```
 
 Ensure the repositories are public on quay.io, or configure image pull secrets on the cluster.
@@ -154,27 +154,27 @@ Ensure the repositories are public on quay.io, or configure image pull secrets o
 
 ```bash
 # Dev cluster
-oc apply -k deploy/openshift/overlays/ai-eng-dev/
+oc apply -k deploy/openshift/overlays/osaipo-eng-dev/
 
 # Prod cluster
-oc apply -k deploy/openshift/overlays/ai-eng-prod/
+oc apply -k deploy/openshift/overlays/osaipo-eng-prod/
 ```
 
 Verify pods are running:
 ```bash
-oc get pods -n team-tracker
+oc get pods -n osaipo-pulse
 ```
 
 The route URL is auto-generated:
 ```bash
-oc get route team-tracker -n team-tracker -o jsonpath='{.spec.host}'
+oc get route osaipo-pulse -n osaipo-pulse -o jsonpath='{.spec.host}'
 ```
 
 ## Dev vs prod overlays
 
-| Aspect | Dev (`overlays/ai-eng-dev/`) | Preprod (`overlays/ai-eng-preprod/`) | Prod (`overlays/ai-eng-prod/`) |
+| Aspect | Dev (`overlays/osaipo-eng-dev/`) | Preprod (`overlays/osaipo-eng-preprod/`) | Prod (`overlays/osaipo-eng-prod/`) |
 |--------|----------------------|------------------------------|------------------------|
-| Namespace | `team-tracker` | `ambient-code--team-tracker` | `ambient-code--team-tracker` |
+| Namespace | `osaipo-pulse` | `osaipo-aspen--osaipo-pulse` | `osaipo-aspen--osaipo-pulse` |
 | `ADMIN_EMAILS` | Unset (first user auto-added to allowlist) | Inherits from base | Set to admin email (pre-seeds allowlist) |
 | Route hostname | Auto-generated | Patched to preprod hostname | Patched to prod hostname |
 | Images | `:latest` | `:latest` (inherits from base) | Pinned to git SHA tags |
@@ -187,24 +187,24 @@ Rebuild the affected image(s), push, and restart:
 
 ```bash
 # Rebuild and push (see step 3 for ARM Mac instructions)
-podman push quay.io/org-pulse/team-tracker-backend:latest
-podman push quay.io/org-pulse/team-tracker-frontend:latest
+podman push quay.io/osaipo-data/osaipo-pulse-backend:latest
+podman push quay.io/osaipo-data/osaipo-pulse-frontend:latest
 
 # Restart to pull new images
-oc rollout restart deployment/backend deployment/frontend -n team-tracker
+oc rollout restart deployment/backend deployment/frontend -n osaipo-pulse
 ```
 
 ## Viewing logs
 
 ```bash
 # Backend
-oc logs deployment/backend -n team-tracker -f
+oc logs deployment/backend -n osaipo-pulse -f
 
 # Frontend (nginx)
-oc logs deployment/frontend -n team-tracker -c nginx -f
+oc logs deployment/frontend -n osaipo-pulse -c nginx -f
 
 # OAuth proxy
-oc logs deployment/frontend -n team-tracker -c oauth-proxy -f
+oc logs deployment/frontend -n osaipo-pulse -c oauth-proxy -f
 ```
 
 ## Troubleshooting
@@ -224,7 +224,7 @@ The authenticated user's email doesn't match any entry in `data/allowlist.json` 
 - **Prod:** Add the user's email to `ADMIN_EMAILS` in the configmap, or use the Settings UI to manage the allowlist.
 - **Quick fix:** Shell into the backend pod and edit the allowlist directly:
   ```bash
-  oc exec -it deployment/backend -n team-tracker -- cat /app/data/allowlist.json
+  oc exec -it deployment/backend -n osaipo-pulse -- cat /app/data/allowlist.json
   ```
 
 ### `Cannot read properties of null (reading 'orgs')`
@@ -235,10 +235,10 @@ The roster hasn't been synced yet. Go to Settings and configure roster sync, the
 
 The `GITHUB_TOKEN` secret contains a trailing newline. Recreate it with the newline stripped:
 ```bash
-oc patch secret team-tracker-secrets -n team-tracker \
+oc patch secret osaipo-pulse-secrets -n osaipo-pulse \
   --type merge \
   -p "{\"stringData\":{\"GITHUB_TOKEN\":\"$(tr -d '\n' < ~/.your-github-token)\"}}"
-oc rollout restart deployment/backend -n team-tracker
+oc rollout restart deployment/backend -n osaipo-pulse
 ```
 
 ## Architecture
