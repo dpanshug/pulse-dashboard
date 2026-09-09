@@ -1,8 +1,8 @@
-# AI Engineering People & Teams
+# OSAIPO Pulse
 
-AI Engineering modules and deployment for [Org Pulse](https://github.com/red-hat-data-services/org-pulse-core), an internal engineering dashboard connecting Jira, GitHub, and GitLab data with team rosters to surface delivery insights.
+OSAIPO-specific modules and deployment for [Org Pulse](https://github.com/red-hat-data-services/org-pulse-core), an internal engineering dashboard connecting Jira, GitHub, and GitLab data with team rosters to surface delivery insights.
 
-This repo contains AI Eng-specific modules, platform customizations, and deployment overlays. The core platform (`@org-pulse/core`) is installed as an npm dependency.
+This repo contains OSAIPO-specific modules, platform customizations, and deployment overlays. The core platform (`@org-pulse/core`) is installed as an npm dependency.
 
 ## Quick Start (Demo Mode)
 
@@ -114,7 +114,7 @@ npm run validate:dockerfile-deps  # Verify Dockerfile deps match package.json
 npm run update:view-owners        # Regenerate platform/view-owners/owners.js from git history
 
 # Container-based tests (requires Docker/Podman)
-make smoke-test                 # Run smoke tests against AI Eng images
+make smoke-test                 # Run smoke tests against OSAIPO images
 make test-module MODULE=<name>  # Run integration tests for a module
 ```
 
@@ -129,7 +129,7 @@ make test-module MODULE=<name>  # Run integration tests for a module
 
 ## Deployment
 
-Deployed to OpenShift via ArgoCD. AI Eng images extend core images from `@org-pulse/core`. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the full deployment guide.
+Deployed to OpenShift via ArgoCD. OSAIPO images extend core images from `@org-pulse/core`. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the full deployment guide.
 
 ## Contributing
 
