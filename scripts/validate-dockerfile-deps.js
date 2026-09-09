@@ -47,8 +47,8 @@ function parseDockerfileDeps(filepath) {
   return deps;
 }
 
-const frontendDockerfile = path.join(ROOT, 'deploy/ai-eng.frontend.Dockerfile');
-const backendDockerfile = path.join(ROOT, 'deploy/ai-eng.backend.Dockerfile');
+const frontendDockerfile = path.join(ROOT, 'deploy/osaipo-eng.frontend.Dockerfile');
+const backendDockerfile = path.join(ROOT, 'deploy/osaipo-eng.backend.Dockerfile');
 
 const frontendDeps = parseDockerfileDeps(frontendDockerfile);
 const backendDeps = parseDockerfileDeps(backendDockerfile);
@@ -62,7 +62,7 @@ for (const dep of aiEngDeps) {
   if (!dockerDeps.has(dep)) {
     console.error(
       `MISSING: "${dep}" is in package.json but not in any Dockerfile.` +
-      `\n  Add it to deploy/ai-eng.frontend.Dockerfile or deploy/ai-eng.backend.Dockerfile`
+      `\n  Add it to deploy/osaipo-eng.frontend.Dockerfile or deploy/osaipo-eng.backend.Dockerfile`
     );
     errors++;
   }

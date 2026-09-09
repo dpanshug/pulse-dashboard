@@ -78,20 +78,20 @@ help:
 # ========================================
 pull-core-images: ## Pull core images from Quay (version from @org-pulse/core)
 	@echo "Pulling core images tagged $(CORE_TAG)..."
-	$(CONTAINER_RUNTIME) pull quay.io/org-pulse/org-pulse-core-backend:$(CORE_TAG)
-	$(CONTAINER_RUNTIME) pull quay.io/org-pulse/org-pulse-core-frontend-builder:$(CORE_TAG)
-	$(CONTAINER_RUNTIME) pull quay.io/org-pulse/org-pulse-core-frontend-runtime:$(CORE_TAG)
+	$(CONTAINER_RUNTIME) pull quay.io/osaipo-data/org-pulse-core-backend:$(CORE_TAG)
+	$(CONTAINER_RUNTIME) pull quay.io/osaipo-data/osaipo-pulse-frontend-builder:$(CORE_TAG)
+	$(CONTAINER_RUNTIME) pull quay.io/osaipo-data/osaipo-pulse-frontend-runtime:$(CORE_TAG)
 
 # ========================================
 # Image Builds — AI Engineering (full)
 # ========================================
 build-frontend-image: ## Build AI Eng frontend image
 	@echo "Building AI Eng frontend container image..."
-	@$(CONTAINER_RUNTIME) build -f deploy/ai-eng.frontend.Dockerfile --build-arg CORE_TAG=$(CORE_TAG) -t $(FRONTEND_IMAGE) .
+	@$(CONTAINER_RUNTIME) build -f deploy/osaipo-eng.frontend.Dockerfile --build-arg CORE_TAG=$(CORE_TAG) -t $(FRONTEND_IMAGE) .
 
 build-backend-image: ## Build AI Eng backend image
 	@echo "Building AI Eng backend container image..."
-	@$(CONTAINER_RUNTIME) build -f deploy/ai-eng.backend.Dockerfile --build-arg CORE_TAG=$(CORE_TAG) -t $(BACKEND_IMAGE) .
+	@$(CONTAINER_RUNTIME) build -f deploy/osaipo-eng.backend.Dockerfile --build-arg CORE_TAG=$(CORE_TAG) -t $(BACKEND_IMAGE) .
 
 # ========================================
 # Smoke Tests

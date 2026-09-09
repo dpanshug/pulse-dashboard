@@ -143,7 +143,7 @@ jobs:
     steps:
       - run: echo "No app or deploy changes — skipping"
 
-  smoke-test-ai-eng:
+  smoke-test-osaipo-eng:
     name: AI Eng Smoke Tests
     runs-on: ubuntu-latest
     needs: detect-changes
@@ -179,7 +179,7 @@ jobs:
     name: Smoke Test Status
     runs-on: ubuntu-latest
     if: always()
-    needs: [detect-changes, test, test-skip, smoke-test-ai-eng]
+    needs: [detect-changes, test, test-skip, smoke-test-osaipo-eng]
     permissions:
       contents: read
     steps:
@@ -187,7 +187,7 @@ jobs:
         run: |
           APP="${{ needs.detect-changes.outputs.app }}"
           TEST="${{ needs.test.result }}"
-          SMOKE="${{ needs.smoke-test-ai-eng.result }}"
+          SMOKE="${{ needs.smoke-test-osaipo-eng.result }}"
 
           if [ "$APP" != "true" ]; then
             echo "No code changes — smoke tests skipped"

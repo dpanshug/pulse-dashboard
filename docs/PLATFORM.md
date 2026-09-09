@@ -179,7 +179,7 @@ The core frontend builder does NOT include `platform/`. Deployment-specific
 Dockerfiles add it:
 
 ```dockerfile
-# In deploy/ai-eng.frontend.Dockerfile
+# In deploy/osaipo-eng.frontend.Dockerfile
 COPY platform/ ./platform/
 ```
 

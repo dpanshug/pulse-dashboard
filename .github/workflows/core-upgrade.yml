@@ -46,7 +46,7 @@ jobs:
       - name: Update kustomize remote ref
         if: steps.check.outputs.needs_upgrade == 'true'
         run: |
-          sed -i "s|org-pulse-core//deploy/openshift/base?ref=v[0-9.]*|org-pulse-core//deploy/openshift/base?ref=v${{ steps.check.outputs.latest }}|" deploy/openshift/overlays/ai-eng/kustomization.yaml
+          sed -i "s|org-pulse-core//deploy/openshift/base?ref=v[0-9.]*|org-pulse-core//deploy/openshift/base?ref=v${{ steps.check.outputs.latest }}|" deploy/openshift/overlays/osaipo-eng/kustomization.yaml
 
       - uses: peter-evans/create-pull-request@v8
         if: steps.check.outputs.needs_upgrade == 'true'

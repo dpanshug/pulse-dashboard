@@ -9,7 +9,7 @@
 | **Stack** | Vue 3 SPA + Express backend, deployed on OpenShift via ArgoCD |
 | **Source repo** | `github.com/red-hat-data-services/rhai-org-pulse` |
 | **GitOps repo** | `gitlab.cee.redhat.com/rhai-org-pulse/org-pulse-gitops` |
-| **Image registry** | `quay.io/org-pulse/` |
+| **Image registry** | `quay.io/osaipo-data/` |
 | **ArgoCD namespace** | `rhai-org-pulse--argocd` |
 
 ---
@@ -28,7 +28,7 @@
 | **UI URL** | `https://team-tracker.apps.int.spoke.prod.us-west-2.aws.paas.redhat.com` |
 | **API URL** | `https://api-team-tracker.apps.int.spoke.prod.us-west-2.aws.paas.redhat.com` |
 | **Source branch** | `main` |
-| **Kustomize path** | `deploy/openshift/overlays/ai-eng-prod` |
+| **Kustomize path** | `deploy/openshift/overlays/osaipo-eng-prod` |
 | **Image tags** | Pinned to `:<git-sha>` |
 | **ArgoCD app manifest** | `org-pulse-gitops/clusters/prod-spoke-aws-us-west-2/apps/team-tracker.yaml` |
 
@@ -71,8 +71,8 @@
 
 | Component | Image | Base |
 |-----------|-------|------|
-| Backend | `quay.io/org-pulse/team-tracker-backend` | Extends `org-pulse-core-backend` |
-| Frontend | `quay.io/org-pulse/team-tracker-frontend` | Built from `org-pulse-core-frontend-builder` + `org-pulse-core-frontend-runtime` |
+| Backend | `quay.io/osaipo-data/osaipo-pulse-backend` | Extends `org-pulse-core-backend` |
+| Frontend | `quay.io/osaipo-data/osaipo-pulse-frontend` | Built from `osaipo-pulse-frontend-builder` + `osaipo-pulse-frontend-runtime` |
 | OAuth Proxy | `quay.io/openshift/origin-oauth-proxy:4.16` | Sidecar on frontend pod |
 
 ### Ports
@@ -140,7 +140,7 @@ ArgoCD watches the source repo with **automated sync policy**. The flow is:
    b. Builds core images, then AI Eng images (extending core)
    c. Runs Playwright smoke tests
    d. Pushes images to Quay (`:<sha>` + `:latest`)
-   e. Commits image tag update to `deploy/openshift/overlays/ai-eng-prod/kustomization.yaml` on `main`
+   e. Commits image tag update to `deploy/openshift/overlays/osaipo-eng-prod/kustomization.yaml` on `main`
 4. ArgoCD detects the kustomization change and syncs
 5. ConfigMap names include content hashes — any data change triggers a pod rollout automatically
 
@@ -244,7 +244,7 @@ Secrets are managed via the **Vault Secrets Operator (VSO)**. Each secret is def
 - **Auth method**: AppRole via `VaultAuth` CR referencing `corporate-vault` `VaultConnection`
 - **Refresh interval**: 60 seconds
 
-### team-tracker-secrets
+### osaipo-pulse-secrets
 
 **Vault path**: `rhai-org-pulse-admins/org-pulse`
 
@@ -364,7 +364,7 @@ curl -X POST https://api-team-tracker.apps.int.spoke.prod.us-west-2.aws.paas.red
 
 ```bash
 # In the source repo
-grep -A2 'newTag\|newName' deploy/openshift/overlays/ai-eng-prod/kustomization.yaml
+grep -A2 'newTag\|newName' deploy/openshift/overlays/osaipo-eng-prod/kustomization.yaml
 ```
 
 ### Backup & Restore
@@ -388,7 +388,7 @@ curl https://api-team-tracker.apps.int.spoke.prod.us-west-2.aws.paas.redhat.com/
 Secrets are synced from Vault. To rotate a value, update it in Vault — VSO will sync the change within 60 seconds.
 
 ```bash
-# Update a secret value in Vault (e.g., JIRA_TOKEN in team-tracker-secrets)
+# Update a secret value in Vault (e.g., JIRA_TOKEN in osaipo-pulse-secrets)
 vault kv patch apps/rhai-org-pulse-admins/org-pulse JIRA_TOKEN="new-token-value"
 
 # Restart backend to pick up the change
@@ -403,7 +403,7 @@ oc rollout restart deployment/backend -n rhai-org-pulse--org-pulse
 
 ### Option 1: Revert Image Tag (Fastest)
 
-Edit `deploy/openshift/overlays/ai-eng-prod/kustomization.yaml` to point to a previous image SHA, commit, and push. ArgoCD auto-syncs.
+Edit `deploy/openshift/overlays/osaipo-eng-prod/kustomization.yaml` to point to a previous image SHA, commit, and push. ArgoCD auto-syncs.
 
 ### Option 2: Git Revert
 
@@ -439,7 +439,7 @@ This is required for the backend to reach external APIs (Jira, GitHub, GitLab, L
 | Source code | `github.com/red-hat-data-services/rhai-org-pulse` |
 | GitOps config | `gitlab.cee.redhat.com/rhai-org-pulse/org-pulse-gitops` |
 | Core platform | `github.com/red-hat-data-services/org-pulse-core` |
-| Image registry | `quay.io/org-pulse/` |
+| Image registry | `quay.io/osaipo-data/` |
 | Prod API docs | `https://api-team-tracker.apps.int.spoke.prod.us-west-2.aws.paas.redhat.com/api/docs/` |
 
 ### API Tokens

@@ -126,18 +126,18 @@ Deployed to OpenShift via ArgoCD. Full guide: `deploy/OPENSHIFT.md`.
 
 | Component | Core Image | AI Eng Image |
 |-----------|-----------|--------------|
-| Backend | `quay.io/org-pulse/org-pulse-core-backend` | `quay.io/org-pulse/team-tracker-backend` (extends core) |
-| Frontend | `quay.io/org-pulse/org-pulse-core-frontend` | `quay.io/org-pulse/team-tracker-frontend` (extends core) |
-| Frontend Builder | `quay.io/org-pulse/org-pulse-core-frontend-builder` | — (used as build stage) |
-| Frontend Runtime | `quay.io/org-pulse/org-pulse-core-frontend-runtime` | — (used as runtime stage) |
+| Backend | `quay.io/osaipo-data/org-pulse-core-backend` | `quay.io/osaipo-data/osaipo-pulse-backend` (extends core) |
+| Frontend | `quay.io/osaipo-data/org-pulse-core-frontend` | `quay.io/osaipo-data/osaipo-pulse-frontend` (extends core) |
+| Frontend Builder | `quay.io/osaipo-data/osaipo-pulse-frontend-builder` | — (used as build stage) |
+| Frontend Runtime | `quay.io/osaipo-data/osaipo-pulse-frontend-runtime` | — (used as runtime stage) |
 | OAuth Proxy | `quay.io/openshift/origin-oauth-proxy:4.16` (sidecar) | same |
 
-Kustomize layers: `base/` (core platform + team-tracker) → `overlays/ai-eng/` (AI Eng modules + secrets) → `overlays/ai-eng-{dev,preprod,prod}/` (environment-specific). The `overlays/local/` overlay uses core images for Kind testing.
+Kustomize layers: `base/` (core platform + team-tracker) → `overlays/osaipo-eng/` (AI Eng modules + secrets) → `overlays/osaipo-eng-{dev,preprod,prod}/` (environment-specific). The `overlays/local/` overlay uses core images for Kind testing.
 
 ### CI/CD
 - **`ci.yml`** — PRs + main: lint, test, build, kustomize validate. Required check: "Test & Build".
 - **`build-images.yml`** — main pushes: builds core images first (backend, frontend, frontend-builder, frontend-runtime), then AI Eng images FROM core, runs smoke tests, pushes to Quay (`:<sha>` + `:latest`), commits prod image tag update directly to main (`[skip ci]`).
-- ConfigMap changes auto-trigger rollouts via kustomize `configMapGenerator` — ConfigMap names include a content hash suffix (e.g., `team-tracker-config-5h2f9k`), so any data change produces a new name and triggers a pod rollout automatically.
+- ConfigMap changes auto-trigger rollouts via kustomize `configMapGenerator` — ConfigMap names include a content hash suffix (e.g., `osaipo-pulse-config-5h2f9k`), so any data change produces a new name and triggers a pod rollout automatically.
 
 **Branch protection** uses a GitHub repository ruleset on `main`:
 - Requires PRs (no direct pushes)

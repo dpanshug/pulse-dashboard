@@ -82,13 +82,13 @@ modules/              # AI Eng-specific feature modules (auto-discovered via mod
 platform/             # AI Eng-specific core UI customizations (About page tabs, etc.)
 
 deploy/
-  ai-eng.backend.Dockerfile     # AI Eng backend (extends core backend image)
-  ai-eng.frontend.Dockerfile    # AI Eng frontend (extends core builder + runtime)
+  osaipo-eng.backend.Dockerfile     # AI Eng backend (extends core backend image)
+  osaipo-eng.frontend.Dockerfile    # AI Eng frontend (extends core builder + runtime)
   openshift/
-    overlays/ai-eng/        # AI Engineering shared overlay (kustomize remote base from core)
-    overlays/ai-eng-dev/    # AI Eng dev cluster overlay
-    overlays/ai-eng-preprod/ # AI Eng preprod overlay
-    overlays/ai-eng-prod/   # AI Eng prod overlay
+    overlays/osaipo-eng/        # AI Engineering shared overlay (kustomize remote base from core)
+    overlays/osaipo-eng-dev/    # AI Eng dev cluster overlay
+    overlays/osaipo-eng-preprod/ # AI Eng preprod overlay
+    overlays/osaipo-eng-prod/   # AI Eng prod overlay
 
 scripts/
   setup.js                  # Symlinks core files into workspace
