@@ -8,7 +8,7 @@ These secrets are shared across multiple modules. Modules declare which groups t
 
 ### Jira (`jira`)
 
-Used by: team-tracker, releases, ai-impact
+Used by: team-tracker
 
 | Env Var | Required | Description |
 |---------|----------|-------------|
@@ -17,7 +17,7 @@ Used by: team-tracker, releases, ai-impact
 
 ### GitHub (`github`)
 
-Used by: team-tracker, ai-impact, system-health
+Used by: team-tracker
 
 **Preferred: GitHub App authentication** — generates short-lived installation
 tokens that auto-expire after 1 hour. Higher rate limits (12,500 GraphQL +
@@ -36,7 +36,7 @@ startup, falls back to `GITHUB_TOKEN` if set.
 
 ### GitLab (`gitlab`)
 
-Used by: team-tracker, ai-impact
+Used by: team-tracker
 
 | Env Var | Required | Description |
 |---------|----------|-------------|
@@ -68,22 +68,6 @@ Used by: team-tracker
 | `GITLAB_CEE_REDHAT_DOCS_TOKEN` | No | GitLab PAT for internal documentation instance |
 
 Dynamic secrets: `GITLAB_*_TOKEN` — per-instance GitLab tokens configured via Settings UI.
-
-### releases
-
-| Env Var | Required | Group | Description |
-|---------|----------|-------|-------------|
-| `PRODUCT_PAGES_CLIENT_ID` | No | auth | OAuth client ID for Product Pages |
-| `PRODUCT_PAGES_CLIENT_SECRET` | No | auth | OAuth client secret for Product Pages |
-| `PRODUCT_PAGES_TOKEN` | No | auth (exclusive) | Personal token fallback for local dev |
-| `FEATURE_TRAFFIC_GITLAB_TOKEN` | No | | GitLab PAT for CI artifact fetching |
-| `SMARTSHEET_API_TOKEN` | No | | SmartSheet API token for release discovery |
-
-### ai-impact
-
-| Env Var | Required | Description |
-|---------|----------|-------------|
-| `GITLAB_CEE_REDHAT_DOCS_TOKEN` | No | GitLab PAT for internal documentation instance |
 
 ## OpenShift Deployment
 

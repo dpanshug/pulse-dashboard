@@ -59,12 +59,6 @@ oc create secret generic google-sa-key \
   -n osaipo-pulse \
   --from-file=google-sa-key.json=./secrets/google-sa-key.json
 
-# Optional: SmartSheet API token (for releases module -- release discovery)
-# Generate a token at: My Account > Personal Settings > API Access > Generate New Access Token
-oc patch secret osaipo-pulse-secrets \
-  -n osaipo-pulse \
-  --type merge \
-  -p "{\"stringData\":{\"SMARTSHEET_API_TOKEN\":\"$(tr -d '\n' < ~/.your-smartsheet-token)\"}}"
 ```
 
 ## 3. Build container images

@@ -188,7 +188,7 @@ CI workflow (`build-images.yml`):
 **Integration tests** use Playwright to verify module-specific functionality against production containers in demo mode. Located in `tests/integration/<module>.spec.js`:
 
 ```bash
-make test-module MODULE=ai-impact
+make test-module MODULE=upstream-pulse
 ```
 
 Integration tests verify:

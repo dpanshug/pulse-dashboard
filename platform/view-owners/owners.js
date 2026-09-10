@@ -11,72 +11,6 @@
  * Admin overrides from data/view-owner-overrides.json are merged in during generation.
  */
 export const viewOwners = {
-  // ai-catalyst
-  'ai-catalyst/board':                             'Nati Fridman',
-  'ai-catalyst/candidate-detail':                  'Nati Fridman',
-  'ai-catalyst/catalog':                           'Nati Fridman',
-  'ai-catalyst/report':                            'Nati Fridman',
-  'ai-catalyst/showcase-detail':                   'Nati Fridman',
-
-  // ai-impact
-  'ai-impact/ai-factory-guide':                    'Alex Corvin',
-  'ai-impact/autofix':                             'Alex Corvin',
-  'ai-impact/build-release':                       'Deepak Chourasia',
-  'ai-impact/documentation':                       'tarilabs',
-  'ai-impact/feature-decomposer':                  'Eder Ignatowicz',
-  'ai-impact/feature-review':                      'Alex Corvin',
-  'ai-impact/implementation':                      'Alex Corvin',
-  'ai-impact/rfe-review':                          'Alex Corvin',
-  'ai-impact/security':                            'Alex Corvin',
-  'ai-impact/test-plan-review':                    'Kamesh Akella',
-
-  // customer-insights
-  'customer-insights/dashboard':                   'ankristo-rh',
-  'customer-insights/import':                      'ankristo-rh',
-  'customer-insights/kanban':                      'ankristo-rh',
-  'customer-insights/rfe-creator':                 'ankristo-rh',
-  'customer-insights/roadmap':                     'ankristo-rh',
-
-  // okr-hub
-  'okr-hub/deep-dive':                             'Saiesh Prabhu',
-  'okr-hub/reports':                               'Saiesh Prabhu',
-  'okr-hub/timeline':                              'Saiesh Prabhu',
-
-  // pm-pipeline
-  'pm-pipeline/learn':                             'Jen Albertson',
-  'pm-pipeline/my-pipeline':                       'Jen Albertson',
-  'pm-pipeline/planning-prep':                     'Jen Albertson',
-
-  // product-builds
-  'product-builds/artifact-detail':                'Pavol Pitonak',
-  'product-builds/base-images':                    'Pavol Pitonak',
-  'product-builds/builder-images':                 'Pavol Pitonak',
-  'product-builds/drop-detail':                    'Pavol Pitonak',
-  'product-builds/overview':                       'Giulia Naponiello',
-  'product-builds/package-analysis':               'Einat Pacifici',
-  'product-builds/rhaiis':                         'Pavol Pitonak',
-  'product-builds/rhel-ai':                        'Pavol Pitonak',
-  'product-builds/search':                         'Rishabh Kothari',
-  'product-builds/series-detail':                  'Giulia Naponiello',
-  'product-builds/wheel-collections':              'Pavol Pitonak',
-
-  // releases
-  'releases/audit':                                'Alex Corvin',
-  'releases/deliver':                              'Alex Corvin',
-  'releases/execute':                              'Alex Corvin',
-  'releases/feature-detail':                       'shuels2',
-  'releases/plan':                                 'Alex Corvin',
-  'releases/registry':                             'Alex Corvin',
-  'releases/reports':                              'Alex Corvin',
-  'releases/schedule':                             'Paul McCarthy',
-
-  // system-health
-  'system-health/component-maturity':              'Dana Gutride',
-  'system-health/disconnected-repo-detail':        'Ajay Jaganathan',
-  'system-health/e2e-run-detail':                  'Ajay Jaganathan',
-  'system-health/odh-e2e-health':                  'Ajay Jaganathan',
-  'system-health/quality-analysis':                'Dana Gutride',
-
   // team-tracker
   'team-tracker/home':                             'Dipanshu Gupta',
   'team-tracker/jira-taxonomy':                    'Alex Corvin',
@@ -101,21 +35,6 @@ export const viewOwners = {
   // ── Sub-tab owners (module/view/tab) ──
   // These override the view-level owner when a specific tab is active.
 
-  // releases > execute
-  'releases/execute/feature-list':                 'Alex Corvin',
-  'releases/execute/feature-status':               'Saiesh Prabhu',
-
-  // releases > plan
-  'releases/plan/bu-feedback':                     'Saiesh Prabhu',
-  'releases/plan/feature-readiness':               'Erle Marion',
-  'releases/plan/outcomes':                        'Erle Marion',
-
-  // releases > registry
-  'releases/registry/hygiene':                     'Alex Corvin',
-
-  // system-health > component-maturity
-  'system-health/component-maturity/disconnected': 'Ajay Jaganathan',
-
   // team-tracker > manage
   'team-tracker/manage/data-quality':              'Alex Corvin',
   'team-tracker/manage/field-options':             'Alex Corvin',
@@ -124,16 +43,6 @@ export const viewOwners = {
 
   // ── Report owners (module/view/reportId) ──
   // These override the view-level owner when a specific report is selected.
-
-  // releases > reports
-  'releases/reports/ai-adoption':                  'Saiesh Prabhu',
-  'releases/reports/capacity-commitment':          'Alex Corvin',
-  'releases/reports/cve-sustaining':               'Saiesh Prabhu',
-  'releases/reports/feature-pressure':             'Dimitri Saridakis',
-  'releases/reports/program-hygiene':              'Alex Corvin',
-  'releases/reports/release-readiness':            'Arthy Loganathan',
-  'releases/reports/rhoai-component-architectures': 'Waldemar Znoinski',
-  'releases/reports/tv-fv-delta':                  'Dimitri Saridakis',
 
   // team-tracker > reports
   'team-tracker/reports/team-comparison':          'Alex Corvin',
