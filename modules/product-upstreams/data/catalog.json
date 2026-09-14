@@ -6047,23 +6047,23 @@
       ]
     },
     {
-      "id": "rho",
-      "name": "Red Hat OpenShift",
-      "shortName": "Openshift",
-      "description": "OpenShift container environment and platform.",
+      "id": "abc",
+      "name": "Example Product 2",
+      "shortName": "Example",
+      "description": "This is an example product.",
       "category": "Platform",
       "available": false,
-      "unavailableReason": "In progress; upstream mapping is not yet complete.",
+      "unavailableReason": "Placeholder",
       "upstreams": []
     },
     {
-      "id": "pulp",
-      "name": "Pulp",
-      "shortName": "Pulp",
-      "description": "Pulp is a platform for managing content on distributed systems.",
-      "category": "Repository",
+      "id": "def",
+      "name": "Example Product 3",
+      "shortName": "Example",
+      "description": "This is an example product.",
+      "category": "Platform",
       "available": false,
-      "unavailableReason": "In progress; this is currently being researched.",
+      "unavailableReason": "Placeholder",
       "upstreams": []
     }
   ]
