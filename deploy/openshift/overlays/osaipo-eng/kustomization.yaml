@@ -41,9 +41,9 @@ configMapGenerator:
 
 # Override core images with AI Eng full images
 images:
-  - name: quay.io/org-pulse/org-pulse-core-backend
+  - name: quay.io/osaipo-data/org-pulse-core-backend
     newName: quay.io/osaipo-data/osaipo-pulse-backend
     newTag: latest
-  - name: quay.io/org-pulse/org-pulse-core-frontend
+  - name: quay.io/osaipo-data/org-pulse-core-frontend
     newName: quay.io/osaipo-data/osaipo-pulse-frontend
     newTag: latest

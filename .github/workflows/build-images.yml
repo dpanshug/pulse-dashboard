@@ -209,7 +209,7 @@ jobs:
           ref: ${{ needs.version-bump.outputs.build_sha || github.sha }}
 
       - name: Pull core backend image
-        run: docker pull quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
+        run: docker pull quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
 
       - name: Build AI Eng backend image
         run: |
@@ -270,8 +270,8 @@ jobs:
 
       - name: Pull core frontend images
         run: |
-          docker pull quay.io/org-pulse/org-pulse-core-frontend-builder:${CORE_TAG}
-          docker pull quay.io/org-pulse/org-pulse-core-frontend-runtime:${CORE_TAG}
+          docker pull quay.io/osaipo-data/osaipo-pulse-frontend-builder:${CORE_TAG}
+          docker pull quay.io/osaipo-data/osaipo-pulse-frontend-runtime:${CORE_TAG}
 
       - name: Build AI Eng frontend image
         run: |
@@ -283,7 +283,7 @@ jobs:
 
       - name: Build AI Eng backend image (needed for smoke tests)
         run: |
-          docker pull quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
+          docker pull quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
           docker build \
             -f deploy/osaipo-eng.backend.Dockerfile \
             --build-arg CORE_TAG=${CORE_TAG} \
