@@ -6,7 +6,7 @@
 ARG CORE_TAG=latest
 
 # Stage 1: Build with all specific modules
-FROM quay.io/org-pulse/osaipo-pulse-core-frontend-builder:${CORE_TAG} AS build
+FROM quay.io/org-pulse/org-pulse-core-frontend-builder:${CORE_TAG} AS build
 
 # Install specific frontend dependencies (core deps already present)
 RUN npm install --no-save mermaid @dagrejs/dagre @vue-flow/core @vue-flow/background @vue-flow/controls @vue-flow/minimap
@@ -20,6 +20,6 @@ COPY modules/ ./modules/
 RUN npm run build
 
 # Stage 2: Serve with hardened nginx
-FROM quay.io/org-pulse/osaipo-pulse-core-frontend-runtime:${CORE_TAG}
+FROM quay.io/org-pulse/org-pulse-core-frontend-runtime:${CORE_TAG}
 
 COPY --from=build /app/dist /usr/share/nginx/html
