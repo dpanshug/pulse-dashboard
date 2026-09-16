@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: osaipo-aspen--osaipo-pulse
+namespace: osaipo-aspen--pulse-dashboard
 
 resources:
 - ../osaipo-eng
@@ -9,10 +9,9 @@ resources:
 configMapGenerator:
 - behavior: merge
   literals:
-  - API_PUBLIC_URL=https://api-osaipo-pulse.apps.int.spoke.prod.us-east-1.aws.paas.redhat.com
+  - API_PUBLIC_URL=https://api-pulse-dashboard.apps.int.spoke.prod.us-east-1.aws.paas.redhat.com
   - AUTH_EMAIL_DOMAIN=cluster.local
-  - GOOGLE_OAUTH_CALLBACK_URL=https://osaipo-pulse.apps.int.spoke.prod.us-east-1.aws.paas.redhat.com/api/modules/customer-insights/auth/google/callback
-  name: osaipo-pulse-config
+  name: team-tracker-config
 
 patches:
 - path: route-patch.yaml
