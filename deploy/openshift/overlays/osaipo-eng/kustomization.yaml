@@ -6,7 +6,7 @@ kind: Kustomization
 # (osaipo-eng-dev, osaipo-eng-preprod, osaipo-eng-prod) extend this.
 
 resources:
-  - https://github.com/red-hat-data-services/org-pulse-core//deploy/openshift/base?ref=v2.0.69
+  - ../../osaipo-core-base
 
 patches:
   - path: backend-secrets-patch.yaml
@@ -41,10 +41,9 @@ configMapGenerator:
 
 # Override core images with AI Eng full images
 images:
-  # Selector matches the upstream core manifest; newName remains the OSAIPO image.
-  - name: quay.io/org-pulse/org-pulse-core-backend
+  - name: quay.io/osaipo-data/org-pulse-core-backend
     newName: quay.io/osaipo-data/osaipo-pulse-backend
     newTag: latest
-  - name: quay.io/org-pulse/org-pulse-core-frontend
+  - name: quay.io/osaipo-data/org-pulse-core-frontend
     newName: quay.io/osaipo-data/osaipo-pulse-frontend
     newTag: latest
