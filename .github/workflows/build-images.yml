@@ -29,7 +29,7 @@ on:
       - 'package*.json'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: build-images-${{ github.ref_name }}
@@ -112,17 +112,11 @@ jobs:
       version: ${{ steps.bump.outputs.version }}
       build_sha: ${{ steps.push.outputs.build_sha }}
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - uses: actions/checkout@v7
         with:
           ref: main
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@v7
         with:
@@ -215,7 +209,7 @@ jobs:
           ref: ${{ needs.version-bump.outputs.build_sha || github.sha }}
 
       - name: Pull core backend image
-        run: docker pull quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
+        run: docker pull quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
 
       - name: Build AI Eng backend image
         run: |
@@ -276,8 +270,8 @@ jobs:
 
       - name: Pull core frontend images
         run: |
-          docker pull quay.io/osaipo-data/osaipo-pulse-core-frontend-builder:${CORE_TAG}
-          docker pull quay.io/osaipo-data/osaipo-pulse-core-frontend-runtime:${CORE_TAG}
+          docker pull quay.io/org-pulse/org-pulse-core-frontend-builder:${CORE_TAG}
+          docker pull quay.io/org-pulse/org-pulse-core-frontend-runtime:${CORE_TAG}
 
       - name: Build AI Eng frontend image
         run: |
@@ -289,7 +283,7 @@ jobs:
 
       - name: Build AI Eng backend image (needed for smoke tests)
         run: |
-          docker pull quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
+          docker pull quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
           docker build \
             -f deploy/osaipo-eng.backend.Dockerfile \
             --build-arg CORE_TAG=${CORE_TAG} \
@@ -327,17 +321,11 @@ jobs:
       needs.build-frontend.result != 'failure'
     runs-on: ubuntu-latest
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - uses: actions/checkout@v7
         with:
           ref: preprod
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install kustomize
         uses: imranismail/setup-kustomize@v3
@@ -390,17 +378,11 @@ jobs:
     env:
       BUILD_SHA: ${{ needs.version-bump.outputs.build_sha || github.sha }}
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - uses: actions/checkout@v7
         with:
           ref: main
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install kustomize
         uses: imranismail/setup-kustomize@v3

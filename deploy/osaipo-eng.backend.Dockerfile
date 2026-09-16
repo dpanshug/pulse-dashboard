@@ -5,7 +5,7 @@
 # modules in ./modules/, so no custom entrypoint is needed.
 
 ARG CORE_TAG=latest
-FROM quay.io/osaipo-data/org-pulse-core-backend:${CORE_TAG}
+FROM quay.io/org-pulse/org-pulse-core-backend:${CORE_TAG}
 
 USER 0
 
