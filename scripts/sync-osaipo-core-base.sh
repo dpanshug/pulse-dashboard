@@ -43,6 +43,21 @@ for file in "$TARGET/backend-deployment.yaml" "$TARGET/frontend-deployment.yaml"
     "$file"
   rm -f "$file.bak"
 done
+
+# MPP storage admission requires an explicit reclaim-policy annotation on PVCs.
+python3 - "$TARGET/backend-pvc.yaml" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+needle = "metadata:\n  name: team-tracker-data\n"
+replacement = needle + "  annotations:\n    kubernetes.io/reclaimPolicy: Delete\n"
+if needle not in text:
+    raise SystemExit("unexpected backend-pvc.yaml format")
+path.write_text(text.replace(needle, replacement, 1))
+PY
+
 printf '%s\n' "$TAG" > "$TARGET/CORE_VERSION"
 cat > "$TARGET/UPSTREAM.md" <<EOF
 # OSAIPO Core Deployment Base
