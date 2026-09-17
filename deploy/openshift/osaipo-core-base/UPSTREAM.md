@@ -8,6 +8,6 @@
 
 - Backend image references are rewritten to `quay.io/osaipo-data/org-pulse-core-backend`.
 - Frontend image references are rewritten to `quay.io/osaipo-data/org-pulse-core-frontend`.
-- The chatbot deployment remains the upstream `quay.io/org-pulse/org-pulse-chatbot` image for now.
+- The upstream chatbot resources are excluded because Pulse Dashboard does not use the chatbot yet.
 
 The corresponding OSAIPO core image tags must be published before this base is deployed or the dashboard image workflow is run.

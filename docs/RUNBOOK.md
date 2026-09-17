@@ -276,7 +276,6 @@ Secrets are managed via the **Vault Secrets Operator (VSO)**. Each secret is def
 | `frontend-proxy-cookie` | `org-pulse-frontend-proxy-cookie` | (single value) | OAuth proxy session secret |
 | `google-sa-key` | `org-pulse-google-sa` | `google-sa-key.json` | Google service account JSON key, volume-mounted to `/etc/secrets/google-sa-key.json` |
 | `aws-backup-credentials` | `org-pulse-aws-backup` | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_BACKUP_BUCKET` | AWS S3 backup credentials and bucket name |
-| `chatbot-secrets` | `org-pulse-chatbot-secrets` | LLM/Gate/Embedding endpoints and API keys | Chatbot service credentials |
 
 ### Secret Diagnostics
 

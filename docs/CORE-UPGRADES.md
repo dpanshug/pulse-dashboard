@@ -28,5 +28,7 @@ backend and frontend images to the same `osaipo-data` organization.
 5. After merge, run the image build workflow and verify the immutable dashboard
    image tags before changing GitOps.
 
-The sync script intentionally preserves the upstream chatbot deployment for now;
-chatbot ownership is out of scope for this migration.
+The sync script removes the upstream chatbot resources because Pulse Dashboard
+does not use the chatbot yet. A future chatbot integration should be added as an
+explicit, separately owned deployment when its image, API contract, and secrets
+are defined.
