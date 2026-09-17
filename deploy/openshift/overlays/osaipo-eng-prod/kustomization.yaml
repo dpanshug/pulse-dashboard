@@ -16,6 +16,7 @@ configMapGenerator:
 patches:
 - path: route-patch.yaml
 - path: api-route-patch.yaml
+- path: storage-patch.yaml
 
 images:
 - name: quay.io/osaipo-data/osaipo-pulse-backend
