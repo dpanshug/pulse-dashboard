@@ -15,8 +15,8 @@ TAG="v${VERSION}"
 images=(
   "quay.io/osaipo-data/org-pulse-core-backend:${TAG}"
   "quay.io/osaipo-data/org-pulse-core-frontend:${TAG}"
-  "quay.io/osaipo-data/osaipo-pulse-frontend-builder:${TAG}"
-  "quay.io/osaipo-data/osaipo-pulse-frontend-runtime:${TAG}"
+  "quay.io/osaipo-data/org-pulse-core-frontend-builder:${TAG}"
+  "quay.io/osaipo-data/org-pulse-core-frontend-runtime:${TAG}"
 )
 
 for image in "${images[@]}"; do
