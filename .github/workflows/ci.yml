@@ -166,7 +166,7 @@ jobs:
       - name: Install dependencies and setup workspace
         run: npm ci && npm run setup
 
-      - name: Pull or build core images and build AI Eng images
+      - name: Pull or build core images and build OSAIPO images
         shell: bash
         run: |
           set -euo pipefail
