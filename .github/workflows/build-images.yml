@@ -24,9 +24,10 @@ on:
       - 'tailwind.config.mjs'
       - 'postcss.config.mjs'
       - 'deploy/osaipo-eng.frontend.Dockerfile'
-      # Shared
+      # Shared / build pipeline
       - 'modules/*/module.json'
       - 'package*.json'
+      - '.github/workflows/build-images.yml'
 
 permissions:
   contents: write
@@ -62,12 +63,12 @@ jobs:
           FRONTEND=false
 
           # Check backend paths (platform extensions can have server routes)
-          if echo "$CHANGED" | grep -qE '^(server/index\.js|modules/[^/]+/server/|modules/[^/]+/module\.json|platform/[^/]+/server/|platform/[^/]+/manifest\.json|deploy/osaipo-eng\.backend\.Dockerfile|package)'; then
+          if echo "$CHANGED" | grep -qE '^(server/index\.js|modules/[^/]+/server/|modules/[^/]+/module\.json|platform/[^/]+/server/|platform/[^/]+/manifest\.json|deploy/osaipo-eng\.backend\.Dockerfile|package|\.github/workflows/build-images\.yml$)'; then
             BACKEND=true
           fi
 
           # Check frontend paths
-          if echo "$CHANGED" | grep -qE '^(public/|modules/[^/]+/client/|modules/[^/]+/module\.json|platform/|index\.html|vite\.config|tailwind\.config|postcss\.config|deploy/osaipo-eng\.frontend.*\.Dockerfile|package)'; then
+          if echo "$CHANGED" | grep -qE '^(public/|modules/[^/]+/client/|modules/[^/]+/module\.json|platform/|index\.html|vite\.config|tailwind\.config|postcss\.config|deploy/osaipo-eng\.frontend.*\.Dockerfile|package|\.github/workflows/build-images\.yml$)'; then
             FRONTEND=true
           fi
 
